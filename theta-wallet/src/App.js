@@ -1,11 +1,15 @@
+import React, { useEffect } from 'react';
+import { FiSettings } from 'react-icons/fi';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-     <p>
-       Welcome to Theta Wallet
-     </p>
+
+      <h1 className='underline text-3xl'>
+         Welcome to Theta Wallet
+      </h1>
+
     </div>
   );
 }
