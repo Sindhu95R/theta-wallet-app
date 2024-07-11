@@ -2,9 +2,14 @@
 pragma solidity ^0.8.20;
 
 contract BatchPayment {
-
-    function payMultiple(address[] calldata recipients, uint256[] calldata amounts) external payable {
-        require(recipients.length == amounts.length, "Recipients and amounts arrays must be of the same length");
+    function payMultiple(
+        address[] calldata recipients,
+        uint256[] calldata amounts
+    ) external payable {
+        require(
+            recipients.length == amounts.length,
+            "Recipients and amounts arrays must be of the same length"
+        );
 
         uint256 totalAmount = 0;
 

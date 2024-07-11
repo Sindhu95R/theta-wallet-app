@@ -34,3 +34,6 @@ npm run deploy
 ```
 
 You can find the ABI in artifacs/contracts directory.
+
+### 5. Testing
+Run the Testing.html file
