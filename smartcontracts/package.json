@@ -1,0 +1,10 @@
+{
+    "name": "hardhat-project",
+    "scripts": {
+        "deploy": "npx hardhat ignition deploy ./ignition/modules/Deploy.js --network theta"
+    },
+    "devDependencies": {
+        "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+        "hardhat": "^2.22.6"
+    }
+}
