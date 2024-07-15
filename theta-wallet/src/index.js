@@ -5,6 +5,11 @@ import App from './App';
 import { ContextProvider } from './contexts/ContextProvider';
 import reportWebVitals from './reportWebVitals';
 
+import { registerLicense } from '@syncfusion/ej2-base';
+
+// Replace 'YOUR LICENSE KEY' with your actual license key
+registerLicense(process.env.REACT_APP_SYNC_FUSION_LICENSE_KEY);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
