@@ -69,10 +69,10 @@ const App = () => {
                 <Route path="/dashboard" element={(<Dashboard />)} />
 
                 {/* pages  */}
-                <Route path="/expenses" element={<Expenses />} />
-                <Route path="/financial-insights" element={<Insights />} />
-                <Route path="/gas-predictions" element={<Predictions />} />
-                <Route path="/schedule-payments" element={<Payments />} />
+                <Route path="/group expenses" element={<Expenses />} />
+                <Route path="/financial insights" element={<Insights />} />
+                <Route path="/gas predictions" element={<Predictions />} />
+                <Route path="/schedule payments" element={<Payments />} />
               </Routes>
             </div>
             <Footer />

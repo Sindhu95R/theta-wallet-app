@@ -1,24 +1,24 @@
 import React from "react";
 import styled from "styled-components";
-import Button from "../Componentss/Button";
-import { Box, Container, Flex } from "../Componentss/Layouts";
-import Modal from "../Componentss/Modal";
+import Button from "../../Components/Button";
+import { Box, Container, Flex } from "../../Components/Layouts";
+import Modal from "../../Components/Modal";
 import {
   BoldText,
   Heading,
   Label,
   Spacer,
   Text,
-} from "../Componentss/Typography";
-import AddExpence from "../Containers/AddExpence";
-import AddFriendForm from "../Containers/AddFriendForm";
-import BalanceSummary from "../Containers/BalanceSummary";
-import theme from "../theme";
+} from "../../Components/Typography";
+import AddExpence from "../../Containers/AddExpence";
+import AddFriendForm from "../../Containers/AddFriendForm";
+import BalanceSummary from "../../Containers/BalanceSummary";
+import theme from "../../theme";
 import _ from 'lodash';
 
 import { connect } from "react-redux";
-import { getFriendsList } from "../redux/actions/friend";
-import { getExpenceSummary } from "../redux/actions/expence";
+import { getFriendsList } from "../../redux/actions/friend";
+import { getExpenceSummary } from "../../redux/actions/expence";
 
 const StyledContainer = styled(Container)`
   background: ${({ theme: mode }) => mode.sectionBg};
