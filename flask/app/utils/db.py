@@ -1,10 +1,12 @@
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure, OperationFailure
+import os
 
+db_base_url = os.getenv("MONGO_DB_URL")
 def get_db():
     try:
         # Connect to MongoDB and specify the database name
-        client = MongoClient('mongodb://localhost:27017/')
+        client = MongoClient(db_base_url)
         db = client['theta_transactions']
         
         # Test the connection

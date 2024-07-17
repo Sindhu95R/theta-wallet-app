@@ -1,7 +1,40 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from controllers.transaction_controller import store_transaction, get_transactions
+from controllers.ai_controller import generate_ai_response
 
 transaction_bp = Blueprint('transaction', __name__)
+
+@transaction_bp.route('/transactions/<wallet_address>/qa', methods=['POST'])
+def transaction_qa(wallet_address):
+    user_query = request.json.get('query')
+    if not user_query:
+        return jsonify({"error": "No query provided"}), 400
+
+    # Check if transactions are already stored in session
+    if 'transactions' not in session:
+        # Get the most recent transactions (adjust the limit as needed)
+        transactions, _ = get_transactions(wallet_address, page_number=1, limit_number=10)
+        if not transactions:
+            return jsonify({"error": "No transactions found"}), 404
+        # Store transactions in session
+        session['transactions'] = transactions
+    else:
+        transactions = session['transactions']
+
+    # Get conversation history from session or initialize it
+    conversation_history = session.get('conversation_history', '')
+
+    # Generate AI response
+    ai_response = generate_ai_response(user_query, transactions, conversation_history)
+
+    # Update conversation history
+    conversation_history += f"\nUser: {user_query}\nAI: {ai_response}\n"
+    session['conversation_history'] = conversation_history
+
+    return jsonify({
+        "query": user_query,
+        "response": ai_response
+    }), 200
 
 @transaction_bp.route('/transactions/<wallet_address>', methods=['GET'])
 def fetch_transactions(wallet_address):
