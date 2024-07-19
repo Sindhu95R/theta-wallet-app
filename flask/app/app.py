@@ -3,6 +3,7 @@ from flask_session import Session
 import secrets
 from flask_cors import CORS
 from routes.transaction_routes import transaction_bp
+from routes.edge_cloud_route import edge_cloud_bp
 import os
 
 app = Flask(__name__)
@@ -13,6 +14,7 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SECRET_KEY'] = secret_key
 Session(app)
 
+app.register_blueprint(edge_cloud_bp, url_prefix="/api")
 app.register_blueprint(transaction_bp, url_prefix="/api")
 
 if __name__ == '__main__':
