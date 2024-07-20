@@ -32,12 +32,12 @@ const colorMap = {
 };
 
 const StyledButton = styled.button(
-  ({ size, variant, outlined }) => `
+  ({ size, $variant, $outlined }) => `
   padding: 0 ${size === "large" ? 1.8 : 1.5}rem;
   height: ${size === "large" ? 5 : 3}rem;
-  border: 1px solid ${colorMap[variant].bg};
-  background: ${outlined ? theme.colors.white : colorMap[variant].bg};
-  color: ${outlined ? colorMap[variant].bg : colorMap[variant].color};
+  border: 1px solid ${colorMap[$variant].bg};
+  background: ${$outlined ? theme.colors.white : colorMap[$variant].bg};
+  color: ${$outlined ? colorMap[$variant].bg : colorMap[$variant].color};
   border-radius: 4px;
   font-size: ${size === "large" ? 1.8 : 1}rem;
   transition: all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms;
@@ -45,9 +45,9 @@ const StyledButton = styled.button(
   :not([disabled]) {
     cursor: pointer;
   :hover {
-    background: ${colorMap[variant].hoverBg};
-    color: ${colorMap[variant].color};
-    border-color: ${colorMap[variant].hoverBg}
+    background: ${colorMap[$variant].hoverBg};
+    color: ${colorMap[$variant].color};
+    border-color: ${colorMap[$variant].hoverBg}
   }
 }
 :disabled {
@@ -56,13 +56,21 @@ const StyledButton = styled.button(
   `
 );
 
-const Button = ({ variant, size, disabled, outlined, children, type, ...rest }) => {
+const Button = ({
+  variant = "primary",
+  size = "medium",
+  disabled = false,
+  outlined = false,
+  children,
+  type = "button",
+  ...rest
+}) => {
   return (
     <StyledButton
-      variant={variant}
+      $variant={variant}
       size={size}
       disabled={disabled}
-      outlined={outlined}
+      $outlined={outlined}
       type={type}
       {...rest}
     >
@@ -78,13 +86,6 @@ Button.propTypes = {
   outlined: PropTypes.bool,
   children: PropTypes.any,
   type: PropTypes.string,
-};
-Button.defaultProps = {
-  size: "medium",
-  variant: "primary",
-  disabled: false,
-  outlined: false,
-  type: "button",
 };
 
 export default Button;

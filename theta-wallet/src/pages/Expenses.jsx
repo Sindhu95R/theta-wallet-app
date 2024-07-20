@@ -83,7 +83,7 @@ const Expenses = ({
       {/* Page Header */}
       <PageHeader>
         <Flex>
-          <Heading style={{ margin: 0 }}>Dashboard</Heading>
+          <Heading style={{ margin: 0 }}>Group Expenses</Heading>
           <Spacer />
           <ButtonContainer>
             <Button
@@ -92,9 +92,9 @@ const Expenses = ({
             >
               {"Add Friends"}
             </Button>
-            <Button onClick={() => setOpenAddExpenceBox(true)}>
+            {/* <Button onClick={() => setOpenAddExpenceBox(true)}>
               {"Add Expences"}
-            </Button>
+            </Button> */}
           </ButtonContainer>
         </Flex>
       </PageHeader>
@@ -143,7 +143,7 @@ const Expenses = ({
 
       {/* Modal */}
       {openAddFriendBox && (
-        <Modal title="Add Friend" onClose={() => setOpenAddFriendBox(false)}>
+        <Modal title="Split Expenses" onClose={() => setOpenAddFriendBox(false)}>
           <AddFriendForm onClose={() => setOpenAddFriendBox(false)} />
         </Modal>
       )}

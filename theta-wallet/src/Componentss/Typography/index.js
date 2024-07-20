@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import colors from "../../theme/colors";
 
+// Heading styles
 export const Heading = styled.h1`
   font-size: 3rem;
   line-height: 3rem;
@@ -19,6 +20,7 @@ export const Heading2 = styled(Heading)`
   line-height: 2.5rem;
 `;
 
+// Text styles
 export const Text = styled.p`
   margin: 0;
   line-height: 1rem;
@@ -40,14 +42,16 @@ export const SmallText = styled(Text)`
   font-size: 0.88rem;
 `;
 
-export const Label = styled("label")`
+// Label with transient prop
+export const Label = styled.label`
   line-height: 1rem;
   font-size: 1rem;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: ${({ theme, error }) => (error ? colors.red : theme.text)};
+  color: ${({ theme, $error }) => ($error ? colors.red : theme.text)};
 `;
 
+// Spacer styles
 export const Spacer = styled.span`
   flex: 1 1 auto;
 `;
