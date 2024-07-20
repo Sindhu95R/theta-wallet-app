@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Box, Flex } from "../../components/Layouts";
-import { BoldText, Label, Spacer } from "../../components/Typography";
-import colors from "../../theme/colors";
+import { Box, Flex } from "../components/Layouts";
+import { BoldText, Label, Spacer } from "../components/Typography";
+import colors from "../theme/colors";
 
 const BalanceBox = styled(Box)`
   padding: 1rem;

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../../components/Button";
-import Input from "../../components/Input";
-import { Label } from "../../components/Typography";
-import useForm from "../../utils/Hooks/useForm";
+import Button from "../components/Button";
+import Input from "../components/Input";
+import { Label } from "../components/Typography";
+import useForm from "../utils/Hooks/useForm";
 
 const FromField = styled.div`
   margin-bottom: 1.5rem;

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import colors from "../../theme/colors";
+import colors from "../theme/colors";
 
 // Heading styles
 export const Heading = styled.h1`

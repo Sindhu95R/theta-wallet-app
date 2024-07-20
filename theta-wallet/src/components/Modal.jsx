@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { Heading2, Spacer } from "../Typography";
+import { Heading2, Spacer } from "./Typography";
 import PropTypes from "prop-types";
-import Button from "../Button";
+import Button from "./Button";
 
 const ModalWrapper = styled.div`
   position: fixed;
