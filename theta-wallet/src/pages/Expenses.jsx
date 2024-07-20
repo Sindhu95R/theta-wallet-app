@@ -1,24 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../Componentss/Button";
-import { Box, Container, Flex } from "../Componentss/Layouts";
-import Modal from "../Componentss/Modal";
+import Button from "../components/Button";
+import { Box, Container, Flex } from "../components/Layouts";
+import Modal from "../components/Modal";
 import {
   BoldText,
   Heading,
-  Label,
   Spacer,
   Text,
-} from "../Componentss/Typography";
-import AddExpence from "../Containers/AddExpence";
+} from "../components/Typography";
 import AddFriendForm from "../Containers/AddFriendForm";
 import BalanceSummary from "../Containers/BalanceSummary";
 import theme from "../theme";
 import _ from 'lodash';
-
-import { connect } from "react-redux";
-import { getFriendsList } from "../redux/actions/friend";
-import { getExpenceSummary } from "../redux/actions/expence";
 
 const StyledContainer = styled(Container)`
   background: ${({ theme: mode }) => mode.sectionBg};
@@ -36,47 +30,26 @@ const ButtonContainer = styled.div`
   column-gap: 20px;
 `;
 
-const Expenses = ({
-  getFriendsList,
-  loading,
-  friendList,
-  getExpenceSummary,
-  expenceData,
-}) => {
-  const [openAddFriendBox, setOpenAddFriendBox] = React.useState(false);
-  const [openAddExpenceBox, setOpenAddExpenceBox] = React.useState(false);
-  const [youOwes, setYouOwe] = React.useState([]);
-  const [youOweds, setYouOwed] = React.useState([]);
+const Expenses = () => {
+  const [openAddFriendBox, setOpenAddFriendBox] = useState(false);
+  const [expenses, setExpenses] = useState([]);
+  
+  // Sample data, replace with real logic to fetch or calculate
+  const [totalBalance, setTotalBalance] = useState(0); // Add logic to calculate the total balance
+  const [youOwe, setYouOwe] = useState([]);
+  const [youOwed, setYouOwed] = useState([]);
 
-  const createOweArray = (obj) => {
-    let arr = [];
-    Object.keys(obj).forEach((e) => {
-      let findFriend = friendList.find(({ id }) => id === e);
-      if (findFriend) arr.push({ ...findFriend, amount: obj[e] });
-    });
-    return arr;
+  const handleFormSubmit = (results) => {
+    setExpenses(results);
+    
+    // Example logic to calculate the total balance
+    const totalOwe = results.filter(item => item.amount < 0).reduce((sum, item) => sum + Math.abs(item.amount), 0);
+    const totalOwed = results.filter(item => item.amount > 0).reduce((sum, item) => sum + item.amount, 0);
+
+    setTotalBalance(totalOwed - totalOwe); // Adjust according to your logic
+    setYouOwe(results.filter(item => item.amount < 0));
+    setYouOwed(results.filter(item => item.amount > 0));
   };
-
-  const createSummary = async () => {
-    getExpenceSummary();
-    if (expenceData) {
-      let { youOwe, youOwed } = expenceData;
-      let youOwedArr = youOwed && createOweArray(youOwed);
-      let youOweArr = youOwe && createOweArray(youOwe);
-      setYouOwed(youOwedArr);
-      setYouOwe(youOweArr);
-    }
-  };
-
-  React.useEffect(() => {
-    getFriendsList();
-    getExpenceSummary();
-  }, [getFriendsList, getExpenceSummary]);
-
-  React.useEffect(() => {
-    createSummary();
-    // eslint-disable-next-line
-  }, [friendList]);
 
   return (
     <StyledContainer>
@@ -92,83 +65,36 @@ const Expenses = ({
             >
               {"Add Friends"}
             </Button>
-            {/* <Button onClick={() => setOpenAddExpenceBox(true)}>
-              {"Add Expences"}
-            </Button> */}
           </ButtonContainer>
         </Flex>
       </PageHeader>
+
       {/* Balance Summary */}
-      <BalanceSummary />
+      <BalanceSummary totalBalance={totalBalance} youOwe={youOwe} youOwed={youOwed} />
 
       <Box style={{ marginTop: "1rem" }}>
         <Flex>
           <Box style={{ flex: "1" }}>
-            <BoldText style={{ marginBottom: "2rem" }}>YOU OWE</BoldText>
-            {youOwes &&
-              youOwes.length > 0 &&
-              youOwes.map((val) => (
-                <React.Fragment key={val.id}>
-                  {val.amount > 0 && (
-                    <Box key={val.id} style={{ marginBottom: "1rem" }}>
-                      <Label>{val.name}</Label>
-                      <Text>
-                        you owe: <strong>{_.round(val.amount, 2)}</strong>
-                      </Text>
-                    </Box>
-                  )}
-                </React.Fragment>
-              ))}
-          </Box>
-
-          <Box style={{ flex: "1" }}>
-            <BoldText style={{ marginBottom: "2rem" }}>YOU ARE OWED</BoldText>
-            {youOweds &&
-              youOweds.length > 0 &&
-              youOweds.map((val) => (
-                <React.Fragment key={val.id}>
-                  {val.amount > 0 && (
-                    <Box key={val.id} style={{ marginBottom: "1rem" }}>
-                      <Label>{val.name}</Label>
-                      <Text>
-                        owes you: <strong>{_.round(val.amount, 2)}</strong>
-                      </Text>
-                    </Box>
-                  )}
-                </React.Fragment>
-              ))}
+            <BoldText style={{ marginBottom: "2rem" }}>EXPENSE DETAILS</BoldText>
+            {expenses.map((expense, index) => (
+              <Box key={index} style={{ marginBottom: "1rem" }}>
+                <Text>
+                  {expense.name}: <strong>{_.round(expense.amount, 2)}</strong>
+                </Text>
+              </Box>
+            ))}
           </Box>
         </Flex>
       </Box>
 
       {/* Modal */}
       {openAddFriendBox && (
-        <Modal title="Split Expenses" onClose={() => setOpenAddFriendBox(false)}>
-          <AddFriendForm onClose={() => setOpenAddFriendBox(false)} />
-        </Modal>
-      )}
-
-      {openAddExpenceBox && (
-        <Modal title="Add Expence" onClose={() => setOpenAddExpenceBox(false)}>
-          <AddExpence
-            onClose={() => {
-              setOpenAddExpenceBox(false);
-              getFriendsList();
-              getExpenceSummary();
-            }}
-          />
+        <Modal title="Add Friends" onClose={() => setOpenAddFriendBox(false)}>
+          <AddFriendForm onClose={() => setOpenAddFriendBox(false)} onSubmit={handleFormSubmit} />
         </Modal>
       )}
     </StyledContainer>
   );
 };
 
-const mapStateToProps = (state) => ({
-  loading: state.friends.loading,
-  friendList: state.friends.list,
-  expenceData: state.expenceSummary.summary,
-});
-
-export default connect(mapStateToProps, { getFriendsList, getExpenceSummary })(
-  Expenses
-);
+export default Expenses;

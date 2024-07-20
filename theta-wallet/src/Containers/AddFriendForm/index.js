@@ -1,112 +1,96 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import Button from "../../Componentss/Button";
-import Input from "../../Componentss/Input";
-import { Label } from "../../Componentss/Typography";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
+import { Label } from "../../components/Typography";
 import useForm from "../../utils/Hooks/useForm";
-import { connect } from "react-redux";
-import { addFriend } from "../../redux/actions/friend";
 
-const FormField = styled.div`
+const FromField = styled.div`
   margin-bottom: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
 `;
 
-const HalfWidthInput = styled(Input)`
-  flex: 1;
-  min-width: 45%;
-`;
-
-const AddFriendForm = ({ loading, addFriend, onClose }) => {
+const AddFriendForm = ({ onClose, onSubmit }) => {
+  const { values, errors, onInputChange, onChange } = useForm();
   const [members, setMembers] = useState([{ name: "", address: "" }]);
-  const { values, errors, onInputChange } = useForm();
+  const [totalAmount, setTotalAmount] = useState(0);
 
-  const handleMemberChange = (index, e) => {
-    const updatedMembers = members.map((member, i) =>
-      i === index ? { ...member, [e.target.name]: e.target.value } : member
-    );
-    setMembers(updatedMembers);
-  };
-
-  const handleAddMember = () => {
+  const addMember = () => {
     setMembers([...members, { name: "", address: "" }]);
   };
 
-  const onSubmitForm = async (e) => {
+  const handleChange = (index, field, value) => {
+    const updatedMembers = [...members];
+    updatedMembers[index][field] = value;
+    setMembers(updatedMembers);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (Object.keys(errors).length < 1 && values.amount) {
-      const memberNames = members.map((member) => member.name);
-      const memberAddresses = members.map((member) => member.address);
-      const amountPerMember = values.amount / members.length;
-      
-      await addFriend({ members: memberNames, addresses: memberAddresses, amount: amountPerMember });
-      onClose();
-    }
+    const numberOfMembers = members.length + 1; // including the user
+    const amountPerMember = totalAmount / numberOfMembers;
+
+    const results = members.map(member => ({
+      ...member,
+      amount: amountPerMember
+    }));
+
+    // Include the user
+    results.push({
+      name: 'You',
+      amount: -amountPerMember
+    });
+
+    onSubmit(results);
+    onClose();
   };
 
   return (
-    <form onSubmit={onSubmitForm} id={"addContactForm"}>
+    <form onSubmit={handleSubmit}>
+      <FromField>
+        <Label htmlFor="totalAmount">Total Amount</Label>
+        <Input
+          id="totalAmount"
+          type="number"
+          placeholder="Enter total amount"
+          name="totalAmount"
+          required
+          onChange={(e) => setTotalAmount(parseFloat(e.target.value))}
+        />
+      </FromField>
+
       {members.map((member, index) => (
-        <React.Fragment key={index}>
-          <FormField>
-            <div>
-              <Label htmlFor={`name-${index}`}>Name</Label>
-              <HalfWidthInput
-                id={`name-${index}`}
-                type={"text"}
-                placeholder={"Enter Name"}
-                name="name"
-                value={member.name}
-                required
-                onChange={(e) => handleMemberChange(index, e)}
-              />
-            </div>
-            <div>
-              <Label htmlFor={`address-${index}`}>Address</Label>
-              <HalfWidthInput
-                id={`address-${index}`}
-                type={"text"}
-                placeholder={"Enter Address"}
-                name="address"
-                value={member.address}
-                required
-                onChange={(e) => handleMemberChange(index, e)}
-              />
-            </div>
-          </FormField>
-        </React.Fragment>
-      ))}
-      <Button type="button" onClick={handleAddMember}>
-        Add More
-      </Button>
-      <FormField>
-        <div>
-          <Label htmlFor="amount">Amount to be Split</Label>
-          <Input
-            id="amount"
-            type={"number"}
-            placeholder={"Enter Amount"}
-            name="amount"
-            required
-            onChange={onInputChange}
-          />
-          {errors.amount && <Label $error>{errors.amount}</Label>}
+        <div key={index}>
+          <FromField>
+            <Label htmlFor={`name-${index}`}>Name</Label>
+            <Input
+              id={`name-${index}`}
+              type="text"
+              placeholder="Enter name"
+              name={`name-${index}`}
+              value={member.name}
+              onChange={(e) => handleChange(index, 'name', e.target.value)}
+            />
+          </FromField>
+          <FromField>
+            <Label htmlFor={`address-${index}`}>Address</Label>
+            <Input
+              id={`address-${index}`}
+              type="text"
+              placeholder="Enter address"
+              name={`address-${index}`}
+              value={member.address}
+              onChange={(e) => handleChange(index, 'address', e.target.value)}
+            />
+          </FromField>
         </div>
-      </FormField>
-      <Button
-        type="submit"
-        disabled={Boolean(Object.keys(errors).length) || loading}
-      >
-        {loading ? "Loading, Please wait" : "Submit"}
+      ))}
+
+      <Button type="button" onClick={addMember}>
+        Add More Members
       </Button>
+      <Button type="submit">Submit</Button>
     </form>
   );
 };
 
-const mapStateToProps = (state) => ({
-  loading: state.friends.loading,
-});
-
-export default connect(mapStateToProps, { addFriend })(AddFriendForm);
+export default AddFriendForm;
