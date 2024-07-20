@@ -5,7 +5,7 @@ from decimal import Decimal, InvalidOperation
 from utils.db import get_transactions_from_db
 
 def validate_transaction_data(data):
-    required_fields = ['wallet_address', 'sender', 'recipient', 'gas_fee', 'hash', 'date', 'time']
+    required_fields = ['wallet_address', 'sender', 'recipient', 'amount','gas_fee', 'hash', 'date', 'time']
     missing_fields = [field for field in required_fields if field not in data]
     
     if missing_fields:
@@ -43,6 +43,7 @@ def store_transaction(transaction_data):
             'wallet_address': transaction_data['wallet_address'],
             'sender': transaction_data['sender'],
             'recipient': transaction_data['recipient'],
+            'amount': transaction_data['amount'],
             'category': transaction_data['category'],
             'hash': transaction_data['hash'],
             'timestamp': timestamp

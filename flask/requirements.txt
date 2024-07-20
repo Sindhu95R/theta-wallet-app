@@ -4,4 +4,6 @@ flask-cors
 python-dotenv
 web3
 pymongo==4.6.1
+google-generativeai
+Flask-Session
 
