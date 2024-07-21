@@ -28,6 +28,6 @@ __pycache__
 artifacts
 cache
 deployments
-myenv
+venv
 privatenet
 bin
