@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Box, Typography, Button, Paper, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Fade } from '@mui/material';
+import { Box, Typography, Button, Paper, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Fade, IconButton, Menu, MenuItem, Snackbar } from '@mui/material';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import SendIcon from '@mui/icons-material/Send';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import TransactionModal from './TransactionModal';
 import SendMoneyModal from './SendMoneyModal';
 import axios from 'axios';
@@ -12,6 +15,7 @@ import axios from 'axios';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function Dashboard() {
+
     const [showTransactionModal, setShowTransactionModal] = useState(false);
     const [showSendMoneyModal, setShowSendMoneyModal] = useState(false);
     const [recentTransactions, setRecentTransactions] = useState([]);
@@ -27,6 +31,10 @@ function Dashboard() {
             },
         ],
     });
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+
 
     const walletAddress = '0xAA32Ed0706d0eDFB73976f7af6B90B99f78FdEF3';
     const balance = '1000 TFUEL';
@@ -124,26 +132,95 @@ function Dashboard() {
         },
     };
 
+    const handleProfileClick = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleProfileClose = () => {
+        setAnchorEl(null);
+    };
+
+    const handleCopyAddress = () => {
+        navigator.clipboard.writeText(walletAddress).then(() => {
+            setSnackbarOpen(true);
+            handleProfileClose();
+        }).catch((err) => {
+            console.error('Failed to copy: ', err);
+        });
+    };
+
+    const handleSnackbarClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnackbarOpen(false);
+    };
+
     return (
         <Fade in={true} timeout={1000}>
             <Paper elevation={3} sx={{
                 p: 3,
                 mb: 3,
-                background: 'rgba(255, 255, 255, 0.05)',
+                background: 'rgba(10, 25, 41, 0.7)',
                 backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(42, 184, 230, 0.2)',
+                boxShadow: '0 0 30px rgba(42, 184, 230, 0.1)',
+                position: 'relative',
+                overflow: 'hidden',
+                '&::before': {
+                    content: '""',
+                    position: 'absolute',
+                    top: '-50%',
+                    left: '-50%',
+                    width: '200%',
+                    height: '200%',
+                    background: 'conic-gradient(from 0deg at 50% 50%, #2ab8e6 0deg, transparent 60deg, transparent 300deg, #00ffff 360deg)',
+                    animation: 'rotate 20s linear infinite',
+                    opacity: 0.1,
+                },
+                '@keyframes rotate': {
+                    '0%': { transform: 'rotate(0deg)' },
+                    '100%': { transform: 'rotate(360deg)' },
+                },
             }}>
+                <IconButton
+                    onClick={handleProfileClick}
+                    sx={{
+                        position: 'absolute',
+                        top: 16,
+                        right: 16,
+                        background: 'linear-gradient(45deg, #2ab8e6 30%, #00ffff 90%)',
+                        '&:hover': {
+                            background: 'linear-gradient(45deg, #00ffff 30%, #2ab8e6 90%)',
+                            boxShadow: '0 0 15px rgba(0, 255, 255, 0.5)',
+                        },
+                    }}
+                >
+                    <AccountCircleIcon />
+                </IconButton>
                 <Grid container spacing={3}>
                     <Grid item xs={12} md={8}>
                         <Typography variant="h4" gutterBottom sx={{
                             color: 'primary.main',
                             fontWeight: 'bold',
-                            textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                            textShadow: '0 0 10px rgba(42, 184, 230, 0.5)',
+                            position: 'relative',
+                            display: 'inline-block',
+                            '&::after': {
+                                content: '""',
+                                position: 'absolute',
+                                bottom: '-5px',
+                                left: 0,
+                                width: '100%',
+                                height: '2px',
+                                background: 'linear-gradient(90deg, #2ab8e6, #00ffff)',
+                                boxShadow: '0 0 10px rgba(0, 255, 255, 0.5)',
+                            },
                         }}>
                             Wallet Dashboard
                         </Typography>
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                            <AccountBalanceWalletIcon sx={{ mr: 1, color: 'secondary.main' }} />
+                            <AccountBalanceWalletIcon sx={{ mr: 1, color: 'secondary.main', filter: 'drop-shadow(0 0 5px rgba(0, 255, 255, 0.5))' }} />
                             <Typography variant="h6" sx={{ color: 'text.primary' }}>Balance: {balance}</Typography>
                         </Box>
                         <Typography variant="body2" sx={{ mb: 2, color: 'text.secondary' }}>Address: {walletAddress}</Typography>
@@ -155,9 +232,12 @@ function Dashboard() {
                                 onClick={() => setShowSendMoneyModal(true)}
                                 sx={{
                                     mr: 1,
-                                    background: 'linear-gradient(45deg, #8A2BE2 30%, #00CED1 90%)',
+                                    background: 'linear-gradient(45deg, #2ab8e6 30%, #00ffff 90%)',
+                                    boxShadow: '0 0 20px rgba(0, 255, 255, 0.5)',
                                     '&:hover': {
-                                        background: 'linear-gradient(45deg, #9932CC 30%, #20B2AA 90%)',
+                                        background: 'linear-gradient(45deg, #00ffff 30%, #2ab8e6 90%)',
+                                        boxShadow: '0 0 30px rgba(0, 255, 255, 0.8)',
+                                        transform: 'translateY(-3px)',
                                     },
                                 }}
                             >
@@ -165,19 +245,25 @@ function Dashboard() {
                             </Button>
                         </Box>
                         <Typography variant="h6" gutterBottom sx={{ color: 'text.primary' }}>Recent Transactions</Typography>
-                        <TableContainer component={Paper} sx={{ mb: 2, background: 'rgba(255, 255, 255, 0.03)' }}>
+                        <TableContainer component={Paper} sx={{
+                            mb: 2,
+                            background: 'rgba(10, 25, 41, 0.5)',
+                            '&:hover': {
+                                boxShadow: '0 0 20px rgba(42, 184, 230, 0.2)',
+                            },
+                        }}>
                             <Table size="small">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell sx={{ color: 'text.secondary' }}>Category</TableCell>
-                                        <TableCell sx={{ color: 'text.secondary' }}>Amount</TableCell>
-                                        <TableCell sx={{ color: 'text.secondary' }}>Sender</TableCell>
-                                        <TableCell sx={{ color: 'text.secondary' }}>Date</TableCell>
+                                        <TableCell sx={{ color: 'text.secondary', borderBottom: '2px solid rgba(42, 184, 230, 0.3)' }}>Category</TableCell>
+                                        <TableCell sx={{ color: 'text.secondary', borderBottom: '2px solid rgba(42, 184, 230, 0.3)' }}>Amount</TableCell>
+                                        <TableCell sx={{ color: 'text.secondary', borderBottom: '2px solid rgba(42, 184, 230, 0.3)' }}>Sender</TableCell>
+                                        <TableCell sx={{ color: 'text.secondary', borderBottom: '2px solid rgba(42, 184, 230, 0.3)' }}>Date</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {recentTransactions.map((transaction) => (
-                                        <TableRow key={transaction._id}>
+                                        <TableRow key={transaction._id} sx={{ '&:hover': { background: 'rgba(42, 184, 230, 0.1)' } }}>
                                             <TableCell sx={{ color: 'text.primary' }}>{transaction.category}</TableCell>
                                             <TableCell sx={{ color: 'text.primary' }}>{transaction.gas_fee} TFUEL</TableCell>
                                             <TableCell sx={{ color: 'text.primary' }}>{transaction.sender}</TableCell>
@@ -193,7 +279,8 @@ function Dashboard() {
                             sx={{
                                 color: 'secondary.main',
                                 '&:hover': {
-                                    background: 'rgba(255, 255, 255, 0.05)',
+                                    background: 'rgba(42, 184, 230, 0.1)',
+                                    transform: 'translateY(-2px)',
                                 },
                             }}
                         >
@@ -201,11 +288,103 @@ function Dashboard() {
                         </Button>
                     </Grid>
                     <Grid item xs={12} md={4}>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            height: '100%',
+                            position: 'relative',
+                            '&::before': {
+                                content: '""',
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                background: 'radial-gradient(circle, rgba(42, 184, 230, 0.1) 0%, rgba(0, 0, 0, 0) 70%)',
+                                zIndex: -1,
+                            },
+                        }}>
+                            <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleProfileClose}
+                                PaperProps={{
+                                    sx: {
+                                        background: 'rgba(10, 25, 41, 0.9)',
+                                        backdropFilter: 'blur(10px)',
+                                        border: '1px solid rgba(42, 184, 230, 0.2)',
+                                        boxShadow: '0 0 30px rgba(42, 184, 230, 0.1)',
+                                        color: 'text.primary',
+                                        '& .MuiMenuItem-root': {
+                                            '&:hover': {
+                                                background: 'rgba(42, 184, 230, 0.1)',
+                                            },
+                                        },
+                                    },
+                                }}
+                            >
+                                <MenuItem>
+                                    <Typography variant="body2" sx={{ mr: 1 }}>
+                                        {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
+                                    </Typography>
+                                    <IconButton size="small" onClick={handleCopyAddress}>
+                                        <ContentCopyIcon fontSize="small" />
+                                    </IconButton>
+                                </MenuItem>
+                            </Menu>
+                            <Snackbar
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'center',
+                                }}
+                                open={snackbarOpen}
+                                autoHideDuration={3000}
+                                onClose={handleSnackbarClose}
+                                message={
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <CheckCircleOutlineIcon sx={{ mr: 1, color: '#00ffff' }} />
+                                        <Typography>Address copied to clipboard</Typography>
+                                    </Box>
+                                }
+                                ContentProps={{
+                                    sx: {
+                                        background: 'rgba(10, 25, 41, 0.9)',
+                                        backdropFilter: 'blur(10px)',
+                                        border: '1px solid rgba(42, 184, 230, 0.2)',
+                                        boxShadow: '0 0 30px rgba(42, 184, 230, 0.1)',
+                                        color: 'text.primary',
+                                        '& .MuiSnackbarContent-message': {
+                                            padding: '8px 0',
+                                        },
+                                    },
+                                }}
+                            />
+
                             <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', textAlign: 'center', mb: 2 }}>
                                 Transaction Distribution
                             </Typography>
-                            <Box sx={{ flexGrow: 1, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Box sx={{
+                                flexGrow: 1,
+                                width: '100%',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                position: 'relative',
+                                '&::after': {
+                                    content: '""',
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    width: '110%',
+                                    height: '110%',
+                                    background: 'conic-gradient(from 0deg at 50% 50%, rgba(42, 184, 230, 0.2) 0deg, transparent 60deg, transparent 300deg, rgba(0, 255, 255, 0.2) 360deg)',
+                                    borderRadius: '50%',
+                                    transform: 'translate(-50%, -50%)',
+                                    animation: 'rotate 10s linear infinite',
+                                    zIndex: -1,
+                                },
+                            }}>
                                 <Pie data={chartData} options={chartOptions} />
                             </Box>
                         </Box>
@@ -217,6 +396,7 @@ function Dashboard() {
                         transactions={allTransactions}
                     />
                 )}
+
                 {showSendMoneyModal && (
                     <SendMoneyModal onClose={() => setShowSendMoneyModal(false)} onSendMoney={handleSendMoney} />
                 )}
