@@ -18,7 +18,7 @@ contract BatchPayment {
             totalAmount += amounts[i];
         }
 
-        require(msg.value == totalAmount, "Insufficient ether provided");
+        require(msg.value == totalAmount, "Insufficient TFuel provided");
 
         // Transfer the amounts to each recipient
         for (uint256 i = 0; i < recipients.length; i++) {
