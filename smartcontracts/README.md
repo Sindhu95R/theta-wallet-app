@@ -15,6 +15,7 @@ This is a Solidity smart contract for batch payments, allowing multiple payments
 ```bash
 git clone https://github.com/Sindhu95R/theta-wallet-app.git
 cd smartcontracts
+npm install
 ```
 
 ### 2. Compile Contracts
