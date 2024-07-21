@@ -32,23 +32,40 @@ const ButtonContainer = styled.div`
 
 const Expenses = () => {
   const [openAddFriendBox, setOpenAddFriendBox] = useState(false);
-  const [expenses, setExpenses] = useState([]);
-  
-  // Sample data, replace with real logic to fetch or calculate
-  const [totalBalance, setTotalBalance] = useState(0); // Add logic to calculate the total balance
-  const [youOwe, setYouOwe] = useState([]);
-  const [youOwed, setYouOwed] = useState([]);
+  const [groups, setGroups] = useState([]);
+  const [currentGroupIndex, setCurrentGroupIndex] = useState(null);
 
   const handleFormSubmit = (results) => {
-    setExpenses(results);
-    
-    // Example logic to calculate the total balance
-    const totalOwe = results.filter(item => item.amount < 0).reduce((sum, item) => sum + Math.abs(item.amount), 0);
-    const totalOwed = results.filter(item => item.amount > 0).reduce((sum, item) => sum + item.amount, 0);
+    const newGroups = [...groups];
+    newGroups[currentGroupIndex] = {
+      ...newGroups[currentGroupIndex],
+      expenses: results,
+      totalBalance: calculateTotalBalance(results),
+      youOwe: calculateYouOwe(results),
+      youOwed: calculateYouOwed(results),
+    };
+    setGroups(newGroups);
+    setOpenAddFriendBox(false);
+  };
 
-    setTotalBalance(totalOwed - totalOwe); // Adjust according to your logic
-    setYouOwe(results.filter(item => item.amount < 0));
-    setYouOwed(results.filter(item => item.amount > 0));
+  const calculateTotalBalance = (expenses) => {
+    const totalOwe = expenses.filter(item => item.amount < 0).reduce((sum, item) => sum + Math.abs(item.amount), 0);
+    const totalOwed = expenses.filter(item => item.amount > 0).reduce((sum, item) => sum + item.amount, 0);
+    return totalOwed - totalOwe;
+  };
+
+  const calculateYouOwe = (expenses) => {
+    return expenses.filter(item => item.amount < 0);
+  };
+
+  const calculateYouOwed = (expenses) => {
+    return expenses.filter(item => item.amount > 0);
+  };
+
+  const addNewGroup = () => {
+    setGroups([...groups, { expenses: [], totalBalance: 0, youOwe: [], youOwed: [] }]);
+    setCurrentGroupIndex(groups.length);
+    setOpenAddFriendBox(true);
   };
 
   return (
@@ -61,31 +78,36 @@ const Expenses = () => {
           <ButtonContainer>
             <Button
               variant={"warning"}
-              onClick={() => setOpenAddFriendBox(true)}
+              onClick={addNewGroup}
             >
-              {"Add Friends"}
+              {"Add Group"}
             </Button>
           </ButtonContainer>
         </Flex>
       </PageHeader>
 
-      {/* Balance Summary */}
-      <BalanceSummary totalBalance={totalBalance} youOwe={youOwe} youOwed={youOwed} />
-
-      <Box style={{ marginTop: "1rem" }}>
-        <Flex>
-          <Box style={{ flex: "1" }}>
-            <BoldText style={{ marginBottom: "2rem" }}>EXPENSE DETAILS</BoldText>
-            {expenses.map((expense, index) => (
-              <Box key={index} style={{ marginBottom: "1rem" }}>
-                <Text>
-                  {expense.name}: <strong>{_.round(expense.amount, 2)}</strong>
-                </Text>
-              </Box>
-            ))}
-          </Box>
-        </Flex>
-      </Box>
+      {groups.map((group, index) => (
+        <Box key={index} style={{ marginTop: "1rem" }}>
+          <Heading>Group {index + 1}</Heading>
+          <BalanceSummary
+            totalBalance={group.totalBalance}
+            youOwe={group.youOwe}
+            youOwed={group.youOwed}
+          />
+          <Flex>
+            <Box style={{ flex: "1" }}>
+              <BoldText style={{ marginBottom: "2rem" }}>EXPENSE DETAILS</BoldText>
+              {group.expenses.map((expense, expIndex) => (
+                <Box key={expIndex} style={{ marginBottom: "1rem" }}>
+                  <Text>
+                    {expense.name}: <strong>{_.round(expense.amount, 2)}</strong>
+                  </Text>
+                </Box>
+              ))}
+            </Box>
+          </Flex>
+        </Box>
+      ))}
 
       {/* Modal */}
       {openAddFriendBox && (
