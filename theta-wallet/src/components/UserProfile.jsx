@@ -28,9 +28,8 @@ const UserProfile = () => {
           alt="user-profile"
         />
         <div>
-          <p className="font-semibold text-xl dark:text-gray-200"> Mr. Dhyey </p>
-          <p className="text-gray-500 text-sm dark:text-gray-400">  Engineering Manager   </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> dhyey@cryptowallet.com </p>
+          <p className="font-semibold text-xl dark:text-gray-200"> 0x12r45...6HJ9 </p>
+          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> 10.09865ETH </p>
         </div>
       </div>
       <div>
