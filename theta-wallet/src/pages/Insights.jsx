@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { IoSend } from 'react-icons/io5';
 import bot from '../assets/bot.svg';
 import user from '../assets/user.svg';
@@ -61,20 +61,21 @@ const Insights = () => {
     e.preventDefault();
 
     const userPrompt = prompt;
-    const uniqueId = generateUniqueId();
+    const userUniqueId = generateUniqueId();
+    const botUniqueId = generateUniqueId();
 
-    const userMessage = chatStripe(false, userPrompt, uniqueId);
+    const userMessage = chatStripe(false, userPrompt, userUniqueId);
     setMessages((prevMessages) => [...prevMessages, userMessage]);
 
     setPrompt('');
     setLoading(true);
 
-    const botMessage = chatStripe(true, ' ', uniqueId);
+    const botMessage = chatStripe(true, ' ', botUniqueId);
     setMessages((prevMessages) => [...prevMessages, botMessage]);
 
     // Wait for the DOM to update
     setTimeout(() => {
-      const messageDiv = document.getElementById(uniqueId);
+      const messageDiv = document.getElementById(botUniqueId);
       loader(messageDiv);
 
       handleFetch(userPrompt, messageDiv);
@@ -83,12 +84,12 @@ const Insights = () => {
 
   const handleFetch = async (userPrompt, messageDiv) => {
     try {
-      const response = await fetch('https://codex-im0y.onrender.com/', {
+      const response = await fetch('https://theta-wallet-app.onrender.com/api/transactions/0xAA32Ed0706d0eDFB73976f7af6B90B99f78FdEF3/qa', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: userPrompt }),
+        body: JSON.stringify({ query: userPrompt }),
       });
 
       clearInterval(loadInterval);
@@ -96,7 +97,7 @@ const Insights = () => {
 
       if (response.ok) {
         const data = await response.json();
-        const parsedData = data.bot.trim();
+        const parsedData = data.response.trim();
         typeText(messageDiv, parsedData);
       } else {
         const err = await response.text();
