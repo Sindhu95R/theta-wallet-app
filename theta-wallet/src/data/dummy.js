@@ -22,7 +22,7 @@ export const links = [
       title: 'Pages',
       links: [
         {
-          name: 'Expenses',
+          name: 'Group Expenses',
           icon: <FaMoneyCheckAlt />,
         },
         {
@@ -108,4 +108,31 @@ export const chatData = [
     time: '1:12 AM',
   },
 ];
+
+export const dropDownData = [
+  {
+    Id: '1',
+    Time: 'January 2024',
+  },
+  {
+    Id: '2',
+    Time: 'February 2024',
+  },
+  {
+    Id: '3',
+    Time: 'March 2024',
+  },
+  {
+    Id: '4',
+    Time: 'April 2024',
+  },
+  {
+    Id: '5',
+    Time: 'May 2024',
+  },
+  {
+    Id: '6',
+    Time: 'June 2024',
+  },
+]
 
