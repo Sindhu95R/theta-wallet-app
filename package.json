@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "@mui/icons-material": "^5.16.4",
     "@syncfusion/ej2-react-grids": "^26.1.41",
+    "file-saver": "^2.0.5",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
     "lodash": "^4.17.21",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.24.1",
