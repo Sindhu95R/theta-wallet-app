@@ -1,16 +1,23 @@
 {
   "dependencies": {
     "@syncfusion/ej2-react-grids": "^26.1.41",
+    "lodash": "^4.17.21",
     "react-icons": "^5.2.1",
-    "react-router-dom": "^6.24.1"
+    "react-router-dom": "^6.24.1",
+    "styled-components": "^6.1.12"
   },
   "devDependencies": {
     "eslint": "^7.32.0",
     "eslint-plugin-react": "^7.26.0"
   },
   "eslintConfig": {
-    "plugins": ["react"],
-    "extends": ["eslint:recommended", "plugin:react/recommended"],
+    "plugins": [
+      "react"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
     "rules": {
       "react/no-unknown-property": "error"
     },
