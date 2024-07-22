@@ -1,63 +1,39 @@
-import styled from "styled-components";
-import { Box, Flex } from "../components/Layouts";
-import { BoldText, Label, Spacer } from "../components/Typograph";
+import React from 'react';
+import { Box, Typography, Paper } from '@mui/material';
+import styled from 'styled-components';
 
-const colors = {
-  primary: "#5bc5a7",
-  secondary: "#83d2ba",
-  orange: "#FF8027",
-  darkOrange: "#f37217",
-  green: "#78B75E",
-  darkGreen: "#55b32f",
-  red: "#ec5050",
-  darkRed: "#ce4444",
-  blue: "#418CC9",
-  darkBlue: "#1a7bcb",
-  gray: "#818589",
-  darkGray: "#999595",
-  white: "#FFFFFF",
-  black: "#000",
-  // for dark mode
-  darkBG: "#202124",
-  sectionBG: "#36373a",
-  darkText: "#F5F5F7",
-  // for light mode
-  lightBG: "#F2F2F2",
-  lightText: "#2E0509",
-};
-
-const BalanceBox = styled(Box)`
+const BalanceBox = styled(Paper)`
   padding: 1rem;
-  background: ${({ theme }) => theme.background};
-  border-radius: 4px;
-  label {
-    color: ${colors.darkGray};
-  }
+  background: rgba(10, 25, 41, 0.7);
+  border-radius: 16px;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(42, 184, 230, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 255, 255, 0.1);
+`;
+
+const BalanceItem = styled(Box)`
+  text-align: center;
 `;
 
 const BalanceSummary = ({ totalBalance, youOwe, youOwed }) => {
-  // Calculate totals
-  const totalOwe = youOwe.reduce((sum, item) => sum + item.amount, 0);
-  const totalOwed = youOwed.reduce((sum, item) => sum + item.amount, 0);
-  
   return (
-    <BalanceBox>
-      <Flex>
-        <Box>
-          <Label>Total Balance</Label>
-          <BoldText style={{ color: colors.primary }}>{totalBalance}</BoldText>
-        </Box>
-        <Spacer />
-        <Box>
-          <Label>You owe</Label>
-          <BoldText style={{ color: colors.red }}>{totalOwe}</BoldText>
-        </Box>
-        <Spacer />
-        <Box>
-          <Label>You are owed</Label>
-          <BoldText style={{ color: colors.primary }}>{totalOwed}</BoldText>
-        </Box>
-      </Flex>
+    <BalanceBox elevation={3}>
+      <Typography variant="h6" gutterBottom sx={{ color: '#2ab8e6', textAlign: 'center', mb: 2 }}>Balance Summary</Typography>
+      <Box display="flex" justifyContent="space-between">
+        <BalanceItem>
+          <Typography variant="subtitle2" sx={{ color: '#81D4FA' }}>Total Balance</Typography>
+          <Typography variant="h6" sx={{ color: '#2ab8e6', textShadow: '0 0 10px rgba(42, 184, 230, 0.5)' }}>{totalBalance} TFUEL</Typography>
+        </BalanceItem>
+        <BalanceItem>
+          <Typography variant="subtitle2" sx={{ color: '#81D4FA' }}>You owe</Typography>
+          <Typography variant="h6" sx={{ color: '#FF8027', textShadow: '0 0 10px rgba(255, 128, 39, 0.5)' }}>{youOwe} TFUEL</Typography>
+        </BalanceItem>
+        <BalanceItem>
+          <Typography variant="subtitle2" sx={{ color: '#81D4FA' }}>You are owed</Typography>
+          <Typography variant="h6" sx={{ color: '#78B75E', textShadow: '0 0 10px rgba(120, 183, 94, 0.5)' }}>{youOwed} TFUEL</Typography>
+        </BalanceItem>
+      </Box>
     </BalanceBox>
   );
 };
