@@ -8,6 +8,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Modal from './Modal';
 import AddFriendForm from '../containers/AddFriendForm';
 import styled from 'styled-components';
+import Web3 from 'web3';
 
 const StyledTableCell = styled(TableCell)`
   color: #FFFFFF;
@@ -16,17 +17,53 @@ const StyledTableCell = styled(TableCell)`
 const GroupExpenses = () => {
   const [openAddFriendBox, setOpenAddFriendBox] = useState(false);
   const [groups, setGroups] = useState([]);
+  const [web3, setWeb3] = useState(null);
+  const [contract, setContract] = useState(null);
+  const contractAddress = "0xF654962ad844c1a54d6163a5Cc86eF6B43D0710c";
+  const abi = [
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "recipients",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "amounts",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "payMultiple",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ];
 
-  // Load groups from local storage when the component mounts
   useEffect(() => {
     const savedGroups = JSON.parse(localStorage.getItem('groups')) || [];
     setGroups(savedGroups);
   }, []);
 
-  // Save groups to local storage whenever groups state changes
   useEffect(() => {
     localStorage.setItem('groups', JSON.stringify(groups));
   }, [groups]);
+
+  useEffect(() => {
+    if (window.ethereum) {
+      const web3Instance = new Web3(window.ethereum);
+      setWeb3(web3Instance);
+      window.ethereum.request({ method: 'eth_requestAccounts' })
+        .then(accounts => {
+          const contractInstance = new web3Instance.eth.Contract(abi, contractAddress, { from: accounts[0] });
+          setContract(contractInstance);
+        })
+        .catch(error => console.error(error));
+    } else {
+      console.error("MetaMask is not installed.");
+    }
+  }, []);
 
   const handleFormSubmit = (results) => {
     setGroups([...groups, results]);
@@ -41,9 +78,23 @@ const GroupExpenses = () => {
     setOpenAddFriendBox(false);
   };
 
-  const handleSettleClick = (group) => {
-    // Define settle functionality here
-    console.log(`Settle functionality for group: ${group.groupName}`);
+  const handleSettleClick = async (group) => {
+    if (!web3 || !contract) {
+      console.error("Web3 or contract is not initialized.");
+      return;
+    }
+
+    const recipients = group.members.map(member => member.address);
+    const amounts = group.members.map(member => web3.utils.toWei(member.splitAmount.toString(), 'ether'));
+    const totalAmount = amounts.reduce((total, amount) => total.add(web3.utils.toBN(amount)), web3.utils.toBN(0));
+
+    try {
+      const accounts = await web3.eth.getAccounts();
+      const tx = await contract.methods.payMultiple(recipients, amounts).send({ from: accounts[0], value: totalAmount });
+      console.log(`Transaction sent: ${tx.transactionHash}`);
+    } catch (error) {
+      console.error(`Error: ${error.message}`);
+    }
   };
 
   return (
@@ -85,7 +136,7 @@ const GroupExpenses = () => {
                         <Box key={memberIndex} sx={{ marginBottom: 1 }}>
                           <Typography variant="body2" sx={{ color: '#81D4FA' }}>Name: {member.name}</Typography>
                           <Typography variant="body2" sx={{ color: '#81D4FA' }}>Address: {member.address}</Typography>
-                          <Typography variant="body2" sx={{ color: '#81D4FA' }}>Amount Owed: {member.splitAmount}</Typography>
+                          <Typography variant="body2" sx={{ color: '#81D4FA' }}>Amount Owed: {member.splitAmount} ETH</Typography>
                         </Box>
                       ))}
                     </StyledTableCell>
