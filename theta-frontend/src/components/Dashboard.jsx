@@ -97,6 +97,7 @@ function Dashboard() {
                 wallet_address: walletAddress,
                 sender: walletAddress,
                 recipient: recipient,
+                amount: amount,
                 gas_fee: amount,
                 category: category,
                 hash: `0x${Math.random().toString(36).substr(2, 9)}`,
