@@ -26,7 +26,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Orbitron", "Roboto", sans-serif',
+    fontFamily: '"Roboto", sans-serif',
     h4: {
       fontWeight: 700,
     },

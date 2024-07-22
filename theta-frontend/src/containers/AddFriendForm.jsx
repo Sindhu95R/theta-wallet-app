@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, TextField, Button, Typography, Paper } from '@mui/material';
 import styled from 'styled-components';
 
@@ -32,9 +32,13 @@ const AddFriendForm = ({ onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const splitAmount = totalAmount / members.length;
     const results = {
-      name: groupName,
-      members: members,
+      groupName,
+      members: members.map(member => ({
+        ...member,
+        splitAmount: splitAmount.toFixed(2)
+      })),
       totalBalance: totalAmount,
     };
     onSubmit(results);

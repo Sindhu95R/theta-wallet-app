@@ -1,0 +1,129 @@
+Paper styles
+.paper {
+  padding: 24px;
+  margin-bottom: 24px;
+  background: rgba(10, 25, 41, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(42, 184, 230, 0.2);
+  box-shadow: 0 0 30px rgba(42, 184, 230, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.paper::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg at 50% 50%, #2ab8e6 0deg, transparent 60deg, transparent 300deg, #00ffff 360deg);
+  animation: rotate 20s linear infinite;
+  opacity: 0.1;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Typography styles */
+.title {
+  color: #2ab8e6;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(42, 184, 230, 0.5);
+  position: relative;
+  display: inline-block;
+}
+
+.title::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #2ab8e6, #00ffff);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+/* Button styles */
+.add-group-btn {
+  margin-right: 8px;
+  background: linear-gradient(45deg, #2ab8e6 30%, #00ffff 90%);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.add-group-btn:hover {
+  background: linear-gradient(45deg, #00ffff 30%, #2ab8e6 90%);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+  transform: translateY(-3px);
+}
+
+/* Table styles */
+.table-container {
+  margin-bottom: 16px;
+  background: rgba(10, 25, 41, 0.5);
+}
+
+.table-container:hover {
+  box-shadow: 0 0 20px rgba(42, 184, 230, 0.2);
+}
+
+.table-cell {
+  color: #81D4FA;
+  border-bottom: 2px solid rgba(42, 184, 230, 0.3);
+}
+
+.table-row:hover {
+  background: rgba(42, 184, 230, 0.1);
+}
+
+/* Chart container styles */
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+
+.chart-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle, rgba(42, 184, 230, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+  z-index: -1;
+}
+
+.chart-box {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.chart-box::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 110%;
+  height: 110%;
+  background: conic-gradient(from 0deg at 50% 50%, rgba(42, 184, 230, 0.2) 0deg, transparent 60deg, transparent 300deg, rgba(0, 255, 255, 0.2) 360deg);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotate 10s linear infinite;
+  z-index: -1;
+}
+
+
+
+
+
+
