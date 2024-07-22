@@ -79,17 +79,21 @@ const GroupExpenses = () => {
   };
 
   const handleSettleClick = async (group) => {
-    if (!web3 || !contract) {
-      console.error("Web3 or contract is not initialized.");
-      return;
-    }
+    // if (!contract) {
+    //   console.error("Web3 or contract is not initialized.");
+    //   return;
+    // }
 
     const recipients = group.members.map(member => member.address);
     const amounts = group.members.map(member => web3.utils.toWei(member.splitAmount.toString(), 'ether'));
-    const totalAmount = amounts.reduce((total, amount) => total.add(web3.utils.toBN(amount)), web3.utils.toBN(0));
+    // const totalAmount = amounts.reduce((total, amount) => total.add(Number(amount)), Number(0));
+    let totalAmount
+    for(let i = 0; i < amounts.length; i++){
+      totalAmount += Number(amounts[i])}
 
     try {
       const accounts = await web3.eth.getAccounts();
+      console.log(accounts)
       const tx = await contract.methods.payMultiple(recipients, amounts).send({ from: accounts[0], value: totalAmount });
       console.log(`Transaction sent: ${tx.transactionHash}`);
     } catch (error) {
