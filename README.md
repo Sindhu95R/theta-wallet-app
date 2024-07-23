@@ -44,19 +44,19 @@ Start the development server
 
 ## Features
 
-Theta blockchain integration
-AI-powered financial analysis and predictions
-Interactive charts and data visualization
-User-friendly Material-UI interface
-Real-time data fetching and updates
-Batch payment smart contract functionality
+1. Theta blockchain integration
+2. AI-powered financial analysis and predictions
+3. Interactive charts and data visualization
+4. User-friendly Material-UI interface
+5. Real-time data fetching and updates
+6. Batch payment smart contract functionality
 
 ## Technologies Used
 
-Frontend: React, Vite, Material-UI, Chart.js
-Backend: Flask
-Smart Contracts: Solidity, Hardhat
-Additional: Axios, Styled-components, Lodash, Ethers.js
+1. Frontend: React, Vite, Material-UI, Chart.js
+2. Backend: Flask
+3. Smart Contracts: Solidity, Hardhat
+4. Additional: Axios, Styled-components, Lodash, Ethers.js
 
 ## License
 
