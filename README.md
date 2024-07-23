@@ -23,23 +23,23 @@ cd theta-wallet-app
 ### 2. Set Up SmartContracts
 Navigate to the smartcontracts directory and follow the instructions in its README to:
 
-Install dependencies
-Compile contracts
-Set up environment variables
-Deploy contracts
+Install dependencies ->
+Compile contracts ->
+Set up environment variables ->
+Deploy contracts ->
 Run tests
 
 ### 3. Set Up flask
 Navigate to the flask directory and follow the instructions in its README to:
 
-Install requirements
-Set up the .env file
-Run the Flask application
+Install requirements ->
+Set up the .env file ->
+Run the Flask application 
 
 ### 4. Set Up theta-frontend
 Navigate to the theta-frontend directory and follow the instructions in its README to:
 
-Install dependencies
+Install dependencies ->
 Start the development server
 
 ## Features
