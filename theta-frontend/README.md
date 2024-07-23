@@ -45,7 +45,7 @@ Theta Frontend is a cutting-edge financial application that leverages the power 
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/theta-frontend.git
+git clone https://github.com/Sindhu95R/theta-wallet-app.git
 cd theta-frontend
 ```
 2. Install dependencies:
