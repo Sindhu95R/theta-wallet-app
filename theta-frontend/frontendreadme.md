@@ -1,6 +1,5 @@
-Here's a README file based on the provided JSON file for your finance app project:
-markdownCopy# Theta Frontend
 
+Theta Frontend-
 A finance application built on the Theta blockchain with AI features.
 
 ## Description
@@ -37,38 +36,43 @@ Theta Frontend is a cutting-edge financial application that leverages the power 
 1. Clone the repository:
 git clone https://github.com/your-username/theta-frontend.git
 cd theta-frontend
-Copy
-2. Install dependencies:
-npm install
-Copyor
+
+Install dependencies:
+npm install 
+ 
+ or 
+
 yarn install
-Copy
-### Development
+
+Development
 
 To run the development server:
 npm run dev
-Copy
+
 or
+
 yarn dev
-Copy
+
 The application will be available at `http://localhost:5173` by default.
 
 ### Building for Production
 
 To create a production build:
 npm run build
-Copy
+
 or
+
 yarn build
-Copy
+
 ### Linting
 
 To run the linter:
 npm run lint
-Copy
+
 or
+
 yarn lint
-Copy
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
@@ -76,5 +80,3 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
-
-## Acknowledgments
