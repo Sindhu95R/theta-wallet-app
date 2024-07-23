@@ -53,6 +53,14 @@ npm install
 
 yarn install
 
+next , write - 
+
+npm install react-icons
+
+or 
+
+yarn install react-icons
+
 2.Development
 
 To run the development server:
