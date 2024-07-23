@@ -1,15 +1,15 @@
-# Theta Frontend-
+# Theta Frontend
+
 A finance application built on the Theta blockchain with AI features.
 
-# React + Vite
+## React + Vite
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-
 
 ## Description
 
@@ -43,46 +43,54 @@ Theta Frontend is a cutting-edge financial application that leverages the power 
 ### Installation
 
 1. Clone the repository:
+
+```bash
 git clone https://github.com/your-username/theta-frontend.git
 cd theta-frontend
+```
+2. Install dependencies:
 
-Install dependencies:
-npm install 
- 
- or 
+```bash
+npm install
+
+or
 
 yarn install
+```
+3. Install react-icons:
 
-next , write - 
-
+```bash
 npm install react-icons
 
-or 
+or
 
-yarn install react-icons
+yarn add react-icons
+```
 
-2.Development
+## Development
 
 To run the development server:
+
+```bash
 npm run dev
 
 or
 
 yarn dev
-
+```
 The application will be available at `http://localhost:5173` by default.
 
-
-### Linting
+## Linting
 
 To run the linter:
+
+```bash
 npm run lint
 
 or
 
 yarn lint
-
-
+```
 
 ## License
 
