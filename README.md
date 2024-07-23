@@ -18,7 +18,7 @@ Each component has its own directory and README with specific instructions.
 ### 1. Clone the Repository
 
 git clone https://github.com/Sindhu95R/theta-wallet-app.git
-cd theta-wallet-app
+
 
 ### 2. Set Up SmartContracts
 Navigate to the smartcontracts directory and follow the instructions in its README to:
