@@ -58,6 +58,9 @@ Start the development server
 3. Smart Contracts: Solidity, Hardhat
 4. Additional: Axios, Styled-components, Lodash, Ethers.js
 
+## Link to the Github Wallet Extension
+https://github.com/Sindhu95R/wallet-extension
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
