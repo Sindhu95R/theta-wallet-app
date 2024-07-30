@@ -37,7 +37,7 @@ function Dashboard() {
 
 
     const walletAddress = '0xAA32Ed0706d0eDFB73976f7af6B90B99f78FdEF3';
-    const balance = '1000 TFUEL';
+    const balance = '288.44 TFUEL';
 
     useEffect(() => {
         fetchRecentTransactions();
